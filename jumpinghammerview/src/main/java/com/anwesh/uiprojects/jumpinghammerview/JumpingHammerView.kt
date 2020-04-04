@@ -20,8 +20,42 @@ val strokeFactor : Int = 90
 val delay : Long = 20
 val foreColor : Int = Color.parseColor("#673AB7")
 val backColor : Int = Color.parseColor("#BDBDBD")
+val barSizeFactor : Float = 4f
 
 fun Int.inverse() : Float = 1f / this
 fun Float.maxScale(i : Int, n : Int) : Float = Math.max(0f, this - i * n.inverse())
 fun Float.divideScale(i : Int, n : Int) : Float = Math.min(n.inverse(), maxScale(i, n)) * n
 fun Float.sinify() : Float = Math.sin(this * Math.PI).toFloat()
+
+fun Canvas.drawJumpingHammer(i : Int, scale : Float, size : Float, w : Float, paint : Paint) {
+    val sci : Float = scale.divideScale(i, bars)
+    val sf : Float = sci.sinify()
+    val barSize : Float = size / barSizeFactor
+    val barW : Float = w / bars
+    val y : Float = (size - barSize) * sf
+    save()
+    translate(size / 2, -y)
+    drawRect(RectF(-barW / 2, -barSize, barW / 2, 0f), paint)
+    drawLine(0f, 0f, 0f, y, paint)
+    restore()
+}
+
+fun Canvas.drawJumpingHammers(scale : Float, size : Float, w : Float, paint : Paint) {
+    for (j in 0..(bars - 1)) {
+        drawJumpingHammer(j, scale, size, w, paint)
+    }
+}
+
+fun Canvas.drawJHTNode(i : Int, scale : Float, paint : Paint) {
+    val w : Float = width.toFloat()
+    val h : Float = height.toFloat()
+    val gap : Float = h / (nodes + 1)
+    val size : Float = gap / sizeFactor
+    paint.color = foreColor
+    paint.strokeWidth = Math.min(w, h) / strokeFactor
+    paint.strokeCap = Paint.Cap.ROUND
+    save()
+    translate(0f, gap * (i + 1))
+    drawJumpingHammers(scale, size, w, paint)
+    restore()
+}
