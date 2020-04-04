@@ -59,3 +59,20 @@ fun Canvas.drawJHTNode(i : Int, scale : Float, paint : Paint) {
     drawJumpingHammers(scale, size, w, paint)
     restore()
 }
+
+class JumpingHammerView(ctx : Context) : View(ctx) {
+
+    override fun onDraw(canvas : Canvas) {
+
+    }
+
+    override fun onTouchEvent(event : MotionEvent) : Boolean {
+        when (event.action) {
+            MotionEvent.ACTION_DOWN -> {
+
+            }
+        }
+        return true
+    }
+}
+
