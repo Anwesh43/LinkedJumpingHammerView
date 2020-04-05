@@ -214,5 +214,14 @@ class JumpingHammerView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    companion object {
+
+        fun create(activity : Activity) : JumpingHammerView {
+            val view : JumpingHammerView = JumpingHammerView(activity)
+            activity.setContentView(view)
+            return view
+        }
+    }
 }
 
