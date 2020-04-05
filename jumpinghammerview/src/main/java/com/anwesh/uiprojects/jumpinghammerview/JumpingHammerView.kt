@@ -189,5 +189,28 @@ class JumpingHammerView(ctx : Context) : View(ctx) {
             curr.startUpdating(cb)
         }
     }
+
+    data class Renderer(var view : JumpingHammerView) {
+
+        private val jh : JumpingHammer = JumpingHammer(0)
+        private var animator : Animator = Animator(view)
+        private val paint : Paint = Paint(Paint.ANTI_ALIAS_FLAG)
+
+        fun render(canvas : Canvas) {
+            canvas.drawColor(backColor)
+            jh.draw(canvas, paint)
+            animator.animate {
+                jh.update {
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            jh.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
 
