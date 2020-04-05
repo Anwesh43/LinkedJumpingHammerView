@@ -21,7 +21,7 @@ val delay : Long = 20
 val foreColor : Int = Color.parseColor("#673AB7")
 val backColor : Int = Color.parseColor("#BDBDBD")
 val barSizeFactor : Float = 4f
-val scGap : Float = 0.02f
+val scGap : Float = 0.04f / bars
 
 fun Int.inverse() : Float = 1f / this
 fun Float.maxScale(i : Int, n : Int) : Float = Math.max(0f, this - i * n.inverse())
@@ -35,9 +35,11 @@ fun Canvas.drawJumpingHammer(i : Int, scale : Float, size : Float, w : Float, pa
     val barW : Float = w / bars
     val y : Float = (size - barSize) * sf
     save()
-    translate(size / 2, -y)
+    translate(size / 2 + barW * i, -y)
     drawRect(RectF(-barW / 2, -barSize, barW / 2, 0f), paint)
-    drawLine(0f, 0f, 0f, y, paint)
+    if (sf > 0f) {
+        drawLine(0f, 0f, 0f, y, paint)
+    }
     restore()
 }
 
